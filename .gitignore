@@ -1,0 +1,75 @@
+# 🔹 Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 🔹 Virtual environment
+venv/
+.env/
+.venv/
+
+# 🔹 Environment variables
+.env
+.env.*
+
+# 🔹 Logs
+*.log
+
+# 🔹 OS files
+.DS_Store
+Thumbs.db
+
+# 🔹 IDEs
+.vscode/
+.idea/
+
+# 🔹 Testing / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# 🔹 Build / dist
+build/
+dist/
+*.egg-info/
+
+# 🔹 SQLite (אם יש)
+*.db
+
+# 🔹 Type checking / linters
+.mypy_cache/
+.ruff_cache/
+
+# 🔹 FastAPI / uvicorn temp
+*.pid
+
+# =========================
+# 🐳 Docker
+# =========================
+
+# Docker override files (לוקאלי בלבד)
+docker-compose.override.yml
+
+# Docker env files (אם לא רוצים לחשוף)
+docker-compose.env
+
+# Docker volumes (אם יש bind mounts מקומיים)
+docker-data/
+volumes/
+
+# Temporary Docker files
+*.tar
+
+# Ignore local secrets/configs used by containers
+secrets/
+*.key
+*.pem
+
+# =========================
+
+# Python version manager
+.python-version
+
+# Pipenv / Poetry
+Pipfile.lock
+poetry.lock
