@@ -1,5 +1,7 @@
+# Simple in-memory task storage
 tasks = []
 
+# Task service functions
 def get_all_tasks():
     return tasks
 
