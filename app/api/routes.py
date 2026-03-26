@@ -27,7 +27,7 @@ def read_task(task_id: int):
     return {"error": "Task not found"}
 
 @router.post("/tasks")
-def add_task(task: TaskCreate):
+def add_task(task: TaskCreate):  
     return create_task(task.title)
 
 @router.delete("/tasks/{task_id}")

@@ -15,7 +15,7 @@ def create_task(title):
         "title": title
     }
     tasks.append(task)
-    return task
+    return task 
 
 def delete_task(task_id):
     task = get_task(task_id)
