@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.schemas.task import TaskCreate, TaskResponse
+from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
 from app.core.db import engine, get_db
 from app.services import task_service
 
@@ -47,12 +47,19 @@ def read_task(task_id: int, db: Session = Depends(get_db)):
 def add_task(task: TaskCreate, db: Session = Depends(get_db)):
     return task_service.create_task(db, task.title)
 
+@router.patch("/tasks/{task_id}", response_model=TaskResponse)
+def modify_task(task_id: int, task: TaskUpdate, db: Session = Depends(get_db)):
+    updated_task = task_service.patch_task(db, task_id, task.title)
+    if not updated_task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return updated_task
+
 @router.put("/tasks/{task_id}", response_model=TaskResponse)
-def modify_task(task_id: int, task: TaskCreate, db: Session = Depends(get_db)):
-    updated_task = task_service.update_task(db, task_id, task.title)
-    if updated_task:
-        return updated_task
-    raise HTTPException(status_code=404, detail="Task not found")
+def replace_task(task_id: int, task: TaskCreate, db: Session = Depends(get_db)):
+    task = task_service.replace_task(db, task_id, task.title)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
 
 @router.delete("/tasks/{task_id}")
 def remove_task(task_id: int, db: Session = Depends(get_db)):
@@ -63,9 +70,7 @@ def remove_task(task_id: int, db: Session = Depends(get_db)):
 
 @router.delete("/tasks")
 def remove_all_tasks(db: Session = Depends(get_db)):
-    status = task_service.delete_all_tasks(db)
-    if not status:
-        return {"message": "No tasks to delete"}
+    task_service.delete_all_tasks(db)
     return {"message": "All tasks deleted"}
 
 @router.post("/tasks/reset")

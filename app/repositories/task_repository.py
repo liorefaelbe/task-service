@@ -16,14 +16,23 @@ def create(db: Session, title: str):
     db.refresh(task)
     return task
 
-def update(db: Session, task_id: int, title: str):
+def update(db, task_id, title):
     task = get_by_id(db, task_id)
-    if task:
-        task.title = title
-        db.commit()
-        db.refresh(task)
-        return task
-    return None 
+    if not task:
+        return None
+    task.title = title
+    db.commit()
+    db.refresh(task)
+    return task
+
+def replace(db, task_id, title):
+    task = get_by_id(db, task_id)
+    if not task:
+        return None
+    task.title = title
+    db.commit()
+    db.refresh(task)
+    return task 
 
 def delete(db: Session, task_id: int):
     task = get_by_id(db, task_id)
@@ -34,11 +43,8 @@ def delete(db: Session, task_id: int):
     return False
 
 def delete_all(db: Session):
-    if db.query(Task).count() > 0:
-        db.query(Task).delete()
-        db.commit() 
-        return True
-    return False
+    db.query(Task).delete()
+    db.commit()
 
 def reset_tasks_table(db: Session):
     db.execute(text("TRUNCATE TABLE tasks RESTART IDENTITY"))
