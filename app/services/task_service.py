@@ -1,27 +1,20 @@
-# Simple in-memory task storage
-tasks = []
+from sqlalchemy.orm import Session
+from app.repositories import task_repository
 
-# Task service functions
-def get_all_tasks():
-    return tasks
+def get_all_tasks(db: Session):
+    return task_repository.get_all(db)
 
-def get_task(task_id):
-    for task in tasks:
-        if task["id"] == task_id:
-            return task
-    return None
+def get_task(db: Session, task_id: int):
+    return task_repository.get_by_id(db, task_id)
 
-def create_task(title):
-    task = {
-        "id": len(tasks) + 1,
-        "title": title
-    }
-    tasks.append(task)
-    return task 
+def create_task(db: Session, title: str):
+    return task_repository.create(db, title)
 
-def delete_task(task_id):
-    task = get_task(task_id)
-    if task:
-        tasks.remove(task)
-        return True
-    return False
+def update_task(db: Session, task_id: int, title: str):
+    return task_repository.update(db, task_id, title)
+
+def delete_task(db: Session, task_id: int):
+    return task_repository.delete(db, task_id)
+
+def reset_tasks_table(db: Session):
+    return task_repository.reset_tasks_table(db)  

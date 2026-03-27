@@ -1,5 +1,11 @@
 from pydantic import BaseModel
 
-# Task schema for creating a new task 
 class TaskCreate(BaseModel):
     title: str
+
+class TaskResponse(BaseModel):
+    id: int
+    title: str
+
+    class Config:
+        from_attributes = True
