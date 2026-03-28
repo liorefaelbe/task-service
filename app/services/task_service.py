@@ -35,18 +35,15 @@ def patch_task(db: Session, task_id: int, title: str = None, info: str = None, e
     new_info = info if info is not None else task.info
     new_execute_at = execute_at if execute_at is not None else task.execute_at
     
-    logger.info(f"Patching task: {title}")
+    logger.info(f"Patching task with ID: {task_id}")
     return task_repository.update(db, task, new_title, new_info, new_execute_at)
 
-def replace_task(db: Session, task_id: int, title: str, info: str = None, execute_at: datetime = None):
+def replace_task(db: Session, task_id: int, title: str, info: str, execute_at: datetime):
     task = task_repository.get_by_id(db, task_id)
     if not task:
         raise NotFoundError("Task not found")
-    
-    info = info if info is not None else ""
-    execute_at = execute_at if execute_at is not None else datetime.now(UTC) + timedelta(minutes=1)
-    
-    logger.info(f"Replacing task: {title}")
+
+    logger.info(f"Replacing task with ID: {task_id}")
     return task_repository.update(db, task, title, info, execute_at)
 
 def delete_task(db: Session, task_id: int):

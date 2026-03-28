@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import text
+from datetime import datetime
+from typing import Optional
 
 from app.models.task import Task
 
@@ -9,7 +11,7 @@ def get_all(db: Session):
 def get_by_id(db: Session, task_id: int):
     return db.query(Task).filter(Task.id == task_id).first()
 
-def create(db: Session, title: str, info: str, created_at: int, execute_at: int):
+def create(db: Session, title: str, info: str, created_at: datetime, execute_at: Optional[datetime]):
     task = Task(title = title, 
                 info = info, 
                 created_at = created_at, 
@@ -20,7 +22,7 @@ def create(db: Session, title: str, info: str, created_at: int, execute_at: int)
     db.refresh(task)
     return task
 
-def update(db: Session, task: Task, title: str, info: str, execute_at: int):
+def update(db: Session, task: Task, title: str, info: str, execute_at: Optional[datetime]):
     task.title = title
     task.info = info
     task.execute_at = execute_at

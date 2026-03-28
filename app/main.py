@@ -8,6 +8,7 @@ from app.core.config import APP_NAME, APP_VERSION
 from app.core.db import init_db
 from app.core.exceptions import (NotFoundError, not_found_exception_handler, generic_exception_handler)
 
+# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
