@@ -38,34 +38,23 @@ def read_tasks(db: Session = Depends(get_db)):
 
 @router.get("/tasks/{task_id}", response_model=TaskResponse)
 def read_task(task_id: int, db: Session = Depends(get_db)):
-    task = task_service.get_task(db, task_id)
-    if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return task
+    return task_service.get_task(db, task_id)
 
 @router.post("/tasks", response_model=TaskResponse)
 def add_task(task: TaskCreate, db: Session = Depends(get_db)):
-    return task_service.create_task(db, task.title)
+    return task_service.create_task(db, task.title, task.info, task.execute_at)
 
 @router.patch("/tasks/{task_id}", response_model=TaskResponse)
 def modify_task(task_id: int, task: TaskUpdate, db: Session = Depends(get_db)):
-    updated_task = task_service.patch_task(db, task_id, task.title)
-    if not updated_task:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return updated_task
+    return task_service.patch_task(db, task_id, task.title, task.info, task.execute_at)
 
 @router.put("/tasks/{task_id}", response_model=TaskResponse)
 def replace_task(task_id: int, task: TaskCreate, db: Session = Depends(get_db)):
-    task = task_service.replace_task(db, task_id, task.title)
-    if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return task
+    return task_service.replace_task(db, task_id, task.title, task.info, task.execute_at)
 
 @router.delete("/tasks/{task_id}")
 def remove_task(task_id: int, db: Session = Depends(get_db)):
-    status = task_service.delete_task(db, task_id)
-    if not status:
-        raise HTTPException(status_code=404, detail="Task not found")
+    task_service.delete_task(db, task_id)
     return {"message": "Task deleted"}
 
 @router.delete("/tasks")
