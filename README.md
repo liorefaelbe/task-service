@@ -112,6 +112,14 @@ The Docker Compose app container uses:
 postgresql://user:password@db:5432/tasks_db
 ```
 
+## Running Tests
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The test suite uses a temporary SQLite database, so it does not require a running PostgreSQL container.
+
 ## API Endpoints
 
 | Method   | Path               | Description                         |
